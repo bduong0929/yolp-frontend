@@ -9,6 +9,18 @@ interface RestaurantCardProps {
 export const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
   const navigate = useNavigate();
 
+  // Calculate average rating
+  const hasReviews = restaurant.reviews && restaurant.reviews.length > 0;
+  const averageRating = hasReviews
+    ? parseFloat(
+        (
+          restaurant.reviews.reduce((acc, review) => acc + review.rating, 0) /
+          restaurant.reviews.length
+        ).toFixed(1),
+      )
+    : 0;
+  const reviewCount = hasReviews ? restaurant.reviews.length : 0;
+
   return (
     <div
       className="flex h-full cursor-pointer flex-col rounded-md border transition-all duration-300 hover:scale-105"
@@ -27,7 +39,18 @@ export const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         className="h-80 w-full rounded-t-md object-cover"
       />
       <div className="flex-grow border-t p-4">
-        <h3 className="text-lg font-bold">{restaurant.name}</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-bold">{restaurant.name}</h3>
+          {hasReviews && (
+            <div className="flex items-center">
+              <span className="mr-1 text-amber-500">★</span>
+              <span className="font-medium">{averageRating}</span>
+              <span className="ml-1 text-sm text-gray-500">
+                ({reviewCount})
+              </span>
+            </div>
+          )}
+        </div>
         {restaurant.description ? (
           <p className="mt-2 text-sm">{restaurant.description}</p>
         ) : (
@@ -48,6 +71,9 @@ export const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
           <p className="mt-1 text-sm text-gray-400 italic">
             Phone not available
           </p>
+        )}
+        {!hasReviews && (
+          <p className="mt-2 text-sm text-gray-400 italic">No reviews yet</p>
         )}
       </div>
     </div>

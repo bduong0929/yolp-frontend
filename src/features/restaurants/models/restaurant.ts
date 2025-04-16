@@ -1,3 +1,5 @@
+import { Review } from "@/features/reviews/models/review";
+
 export interface Restaurant {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export interface Restaurant {
   description?: string;
   imageUrl?: string;
   phone?: string;
+  reviews: Review[];
 }
