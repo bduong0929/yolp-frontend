@@ -1,8 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { useLogout } from "@/features/users/hooks/user-log-out";
-import { useGetUser } from "@/features/users/hooks/use-get-user";
-import { useConfirm } from "@/hooks/use-confirm";
-
+import { useState } from "react";
+import { Home, LogOut, Plus } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import {
@@ -12,11 +9,18 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
+import { Link } from "@tanstack/react-router";
+import { useLogout } from "@/features/auth/hooks/user-log-out";
+import { useGetAuth } from "@/features/auth/hooks/use-get-auth";
+import { useConfirm } from "@/hooks/use-confirm";
+import { AddRestaurantDialog } from "@/features/restaurants/components/add-restaurant-dialog";
+
 export const UserAvatar = () => {
+  const [addRestaurantDialog, setAddRestaurantDialog] = useState(false);
   const [logoutConfirm, LogoutConfirmDialog] = useConfirm();
 
   const { mutate: logout } = useLogout();
-  const { data: user } = useGetUser();
+  const { data: auth } = useGetAuth();
 
   const getInitials = (name: string | undefined) => {
     if (!name) return "";
@@ -36,17 +40,33 @@ export const UserAvatar = () => {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarFallback>{getInitials(user?.username ?? "")}</AvatarFallback>
+            <AvatarFallback>{getInitials(auth?.username ?? "")}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
+            <Home className="mr-2 size-4" />
             <Link to="/">Dashboard</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+          {auth?.role === "ADMIN" && (
+            <DropdownMenuItem onClick={() => setAddRestaurantDialog(true)}>
+              <Plus className="mr-2 size-4" />
+              Add restaurant
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="mr-2 size-4" />
+            Log out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <AddRestaurantDialog
+        open={addRestaurantDialog}
+        setOpen={setAddRestaurantDialog}
+      />
 
       <LogoutConfirmDialog
         title="Are you sure you want to log out?"

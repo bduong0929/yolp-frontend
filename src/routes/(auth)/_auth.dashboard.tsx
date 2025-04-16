@@ -1,4 +1,4 @@
-import { useGetUser } from "@/features/users/hooks/use-get-user";
+import { useGetAuth } from "@/features/auth/hooks/use-get-auth";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(auth)/_auth/dashboard")({
@@ -6,9 +6,9 @@ export const Route = createFileRoute("/(auth)/_auth/dashboard")({
 });
 
 function Dashboard() {
-  const { data: user } = useGetUser();
+  const { data: auth } = useGetAuth();
 
-  if (!user) {
+  if (!auth) {
     return <Navigate to="/sign-in" />;
   }
 

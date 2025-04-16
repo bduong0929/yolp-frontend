@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 
-import { useSignIn } from "@/features/users/hooks/use-sign-in";
+import { useSignIn } from "@/features/auth/hooks/use-sign-in";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   signInSchema,
   SignInSchema,
-} from "@/features/users/schemas/sign-in-schema";
+} from "@/features/auth/schemas/sign-in-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,

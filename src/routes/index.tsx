@@ -1,14 +1,13 @@
-import { useGetUser } from "@/features/users/hooks/use-get-user";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
-
+import { useGetAuth } from "@/features/auth/hooks/use-get-auth";
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const { data: user } = useGetUser();
+  const { data: auth } = useGetAuth();
 
-  if (user) {
+  if (auth) {
     return <Navigate to="/dashboard" />;
   } else {
     return <Navigate to="/sign-in" />;

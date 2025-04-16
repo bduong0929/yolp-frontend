@@ -1,13 +1,14 @@
+import { Auth } from "../models/auth";
+
 import { api } from "@/lib/axios-config";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Auth } from "../models/auth";
 
-export const useGetUser = () => {
+export const useGetAuth = () => {
   const navigate = useNavigate();
 
   return useQuery({
-    queryKey: ["user"],
+    queryKey: ["auth"],
     queryFn: async (): Promise<Auth | null> => {
       try {
         const resp = await api.get("/auth");

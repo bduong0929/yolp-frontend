@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 
-import { useGetUser } from "@/features/users/hooks/use-get-user";
+import { useGetAuth } from "@/features/auth/hooks/use-get-auth";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(public)/_public")({
@@ -8,9 +8,9 @@ export const Route = createFileRoute("/(public)/_public")({
 });
 
 function PublicLayout() {
-  const { data: user, isLoading } = useGetUser();
+  const { data: auth, isLoading } = useGetAuth();
 
-  if (user) {
+  if (auth) {
     return <Navigate to="/dashboard" />;
   }
 
