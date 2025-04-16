@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 import { api } from "@/lib/axios-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,7 +23,9 @@ export const useSignIn = () => {
       navigate({ to: "/dashboard" });
     },
     onError: (error) => {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message);
+      }
     },
   });
 };

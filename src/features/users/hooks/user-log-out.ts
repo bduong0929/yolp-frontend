@@ -1,3 +1,6 @@
+import { AxiosError } from "axios";
+import { toast } from "sonner";
+
 import { api } from "@/lib/axios-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -13,7 +16,9 @@ export const useLogout = () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message);
+      }
     },
   });
 };
