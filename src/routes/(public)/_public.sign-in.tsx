@@ -58,7 +58,6 @@ function SignIn() {
                     type="text"
                     placeholder="Enter your username"
                     {...field}
-                    className="rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -78,7 +77,6 @@ function SignIn() {
                     type="password"
                     placeholder="Enter your password"
                     {...field}
-                    className="rounded-md"
                   />
                 </FormControl>
                 <FormMessage />

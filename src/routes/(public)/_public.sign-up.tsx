@@ -57,7 +57,6 @@ function SignUp() {
                     type="text"
                     placeholder="Enter your username"
                     {...field}
-                    className="rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -77,7 +76,6 @@ function SignUp() {
                     type="password"
                     placeholder="Enter your password"
                     {...field}
-                    className="rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -85,13 +83,13 @@ function SignUp() {
             )}
           />
         </div>
-        <Button type="submit">Sign In</Button>
+        <Button type="submit">Sign Up</Button>
 
         <div className="flex flex-col gap-y-2">
           <p className="text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link className="text-blue-500" to={"/sign-up"}>
-              Sign up
+            Already have an account?{" "}
+            <Link className="text-blue-500" to={"/sign-in"}>
+              Sign in
             </Link>
           </p>
         </div>
