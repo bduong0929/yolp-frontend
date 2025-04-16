@@ -2,6 +2,7 @@ import {
   AddRestaurantSchema,
   addRestaurantSchema,
 } from "../schemas/add-restaurant-schema";
+import { useAddRestaurant } from "../hooks/use-add-restaurant";
 
 import {
   Dialog,
@@ -32,6 +33,8 @@ export const AddRestaurantDialog = ({
   open,
   setOpen,
 }: AddRestaurantDialogProps) => {
+  const { mutate: addRestaurant } = useAddRestaurant();
+
   const form = useForm<AddRestaurantSchema>({
     resolver: zodResolver(addRestaurantSchema),
     defaultValues: {
@@ -44,11 +47,24 @@ export const AddRestaurantDialog = ({
   });
 
   const onSubmit = (data: AddRestaurantSchema) => {
-    console.log(data);
+    addRestaurant(data, {
+      onSuccess: () => {
+        setOpen(false);
+        form.reset();
+      },
+    });
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset();
+          setOpen(false);
+        }
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Restaurant</DialogTitle>

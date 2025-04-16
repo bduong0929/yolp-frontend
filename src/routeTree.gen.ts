@@ -19,6 +19,7 @@ import { Route as authAuthImport } from './routes/(auth)/_auth'
 import { Route as publicPublicSignUpImport } from './routes/(public)/_public.sign-up'
 import { Route as publicPublicSignInImport } from './routes/(public)/_public.sign-in'
 import { Route as authAuthDashboardImport } from './routes/(auth)/_auth.dashboard'
+import { Route as authAuthRestaurantRestaurantIdImport } from './routes/(auth)/_auth.restaurant.$restaurantId'
 
 // Create Virtual Routes
 
@@ -70,6 +71,13 @@ const authAuthDashboardRoute = authAuthDashboardImport.update({
   path: '/dashboard',
   getParentRoute: () => authAuthRoute,
 } as any)
+
+const authAuthRestaurantRestaurantIdRoute =
+  authAuthRestaurantRestaurantIdImport.update({
+    id: '/restaurant/$restaurantId',
+    path: '/restaurant/$restaurantId',
+    getParentRoute: () => authAuthRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -131,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicPublicSignUpImport
       parentRoute: typeof publicPublicImport
     }
+    '/(auth)/_auth/restaurant/$restaurantId': {
+      id: '/(auth)/_auth/restaurant/$restaurantId'
+      path: '/restaurant/$restaurantId'
+      fullPath: '/restaurant/$restaurantId'
+      preLoaderRoute: typeof authAuthRestaurantRestaurantIdImport
+      parentRoute: typeof authAuthImport
+    }
   }
 }
 
@@ -138,10 +153,12 @@ declare module '@tanstack/react-router' {
 
 interface authAuthRouteChildren {
   authAuthDashboardRoute: typeof authAuthDashboardRoute
+  authAuthRestaurantRestaurantIdRoute: typeof authAuthRestaurantRestaurantIdRoute
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
   authAuthDashboardRoute: authAuthDashboardRoute,
+  authAuthRestaurantRestaurantIdRoute: authAuthRestaurantRestaurantIdRoute,
 }
 
 const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
@@ -188,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof authAuthDashboardRoute
   '/sign-in': typeof publicPublicSignInRoute
   '/sign-up': typeof publicPublicSignUpRoute
+  '/restaurant/$restaurantId': typeof authAuthRestaurantRestaurantIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -195,6 +213,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof authAuthDashboardRoute
   '/sign-in': typeof publicPublicSignInRoute
   '/sign-up': typeof publicPublicSignUpRoute
+  '/restaurant/$restaurantId': typeof authAuthRestaurantRestaurantIdRoute
 }
 
 export interface FileRoutesById {
@@ -207,13 +226,19 @@ export interface FileRoutesById {
   '/(auth)/_auth/dashboard': typeof authAuthDashboardRoute
   '/(public)/_public/sign-in': typeof publicPublicSignInRoute
   '/(public)/_public/sign-up': typeof publicPublicSignUpRoute
+  '/(auth)/_auth/restaurant/$restaurantId': typeof authAuthRestaurantRestaurantIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/sign-in' | '/sign-up'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/sign-in'
+    | '/sign-up'
+    | '/restaurant/$restaurantId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/sign-in' | '/sign-up'
+  to: '/' | '/dashboard' | '/sign-in' | '/sign-up' | '/restaurant/$restaurantId'
   id:
     | '__root__'
     | '/'
@@ -224,6 +249,7 @@ export interface FileRouteTypes {
     | '/(auth)/_auth/dashboard'
     | '/(public)/_public/sign-in'
     | '/(public)/_public/sign-up'
+    | '/(auth)/_auth/restaurant/$restaurantId'
   fileRoutesById: FileRoutesById
 }
 
@@ -267,7 +293,8 @@ export const routeTree = rootRoute
       "filePath": "(auth)/_auth.tsx",
       "parent": "/(auth)",
       "children": [
-        "/(auth)/_auth/dashboard"
+        "/(auth)/_auth/dashboard",
+        "/(auth)/_auth/restaurant/$restaurantId"
       ]
     },
     "/(public)": {
@@ -295,6 +322,10 @@ export const routeTree = rootRoute
     "/(public)/_public/sign-up": {
       "filePath": "(public)/_public.sign-up.tsx",
       "parent": "/(public)/_public"
+    },
+    "/(auth)/_auth/restaurant/$restaurantId": {
+      "filePath": "(auth)/_auth.restaurant.$restaurantId.tsx",
+      "parent": "/(auth)/_auth"
     }
   }
 }
