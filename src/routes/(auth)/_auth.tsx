@@ -9,7 +9,7 @@ function AuthLayout() {
   return (
     <div>
       <Navbar />
-      <main className="mx-auto w-11/12 max-w-screen">
+      <main className="mx-auto w-11/12 max-w-screen py-8">
         <Outlet />
       </main>
     </div>
