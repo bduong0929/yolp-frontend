@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/shared/navbar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(auth)/_auth")({
@@ -7,7 +8,8 @@ export const Route = createFileRoute("/(auth)/_auth")({
 function AuthLayout() {
   return (
     <div>
-      <main>
+      <Navbar />
+      <main className="mx-auto w-11/12 max-w-screen">
         <Outlet />
       </main>
     </div>

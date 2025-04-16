@@ -15,20 +15,17 @@ export const UserAvatar = () => {
   const { mutate: logout } = useLogout();
   const { data: user } = useGetUser();
 
-  console.log("User", user);
-
-  const getInitials = (name: string) => {
+  const getInitials = (name: string | undefined) => {
     if (!name) return "";
 
-    const arr = name.split(" ");
-    return arr[0][0] + arr[1][0];
+    return (name[0] + name[1]).toUpperCase();
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarFallback>{getInitials(user?.username)}</AvatarFallback>
+          <AvatarFallback>{getInitials(user?.username ?? "")}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
