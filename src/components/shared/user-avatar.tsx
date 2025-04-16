@@ -1,3 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { useLogout } from "@/features/users/hooks/user-log-out";
+
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import {
@@ -6,17 +9,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useGetUser } from "@/features/users/hooks/use-get-user";
 
 export const UserAvatar = () => {
-  const user = {
-    name: "John Doe",
-  };
+  const { mutate: logout } = useLogout();
+  const { data: user } = useGetUser();
 
-  const handleLogout = () => {
-    console.log("logout");
-  };
+  console.log("User", user);
 
   const getInitials = (name: string) => {
+    if (!name) return "";
+
     const arr = name.split(" ");
     return arr[0][0] + arr[1][0];
   };
@@ -25,12 +28,15 @@ export const UserAvatar = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+          <AvatarFallback>{getInitials(user?.username)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        <DropdownMenuItem>
+          <Link to="/">Dashboard</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => logout()}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

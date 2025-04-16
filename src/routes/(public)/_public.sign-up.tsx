@@ -18,7 +18,7 @@ import {
 } from "@/features/users/schemas/sign-up-schema";
 import { useSignUp } from "@/features/users/hooks/use-sign-up";
 
-export const Route = createFileRoute("/(public)/_auth/sign-up")({
+export const Route = createFileRoute("/(public)/_public/sign-up")({
   component: SignUp,
 });
 

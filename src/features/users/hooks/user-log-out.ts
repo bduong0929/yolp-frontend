@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useUserLogOut = () => {
+export const useLogout = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

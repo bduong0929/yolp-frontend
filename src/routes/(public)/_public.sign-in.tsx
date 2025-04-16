@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export const Route = createFileRoute("/(public)/_auth/sign-in")({
+export const Route = createFileRoute("/(public)/_public/sign-in")({
   component: SignIn,
 });
 
