@@ -5,5 +5,5 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  return <div className="bg-red-500 text-2xl">Index Page</div>;
+  return <div>Index Page</div>;
 }
