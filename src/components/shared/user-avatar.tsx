@@ -1,8 +1,19 @@
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const UserAvatar = () => {
   const user = {
     name: "John Doe",
+  };
+
+  const handleLogout = () => {
+    console.log("logout");
   };
 
   const getInitials = (name: string) => {
@@ -11,8 +22,16 @@ export const UserAvatar = () => {
   };
 
   return (
-    <Avatar>
-      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-    </Avatar>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar>
+          <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Log out</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

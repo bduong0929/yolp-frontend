@@ -8,17 +8,48 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as publicAuthImport } from './routes/(public)/_auth'
+import { Route as publicAuthSignUpImport } from './routes/(public)/_auth.sign-up'
+import { Route as publicAuthSignInImport } from './routes/(public)/_auth.sign-in'
+
+// Create Virtual Routes
+
+const publicImport = createFileRoute('/(public)')()
 
 // Create/Update Routes
+
+const publicRoute = publicImport.update({
+  id: '/(public)',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const publicAuthRoute = publicAuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const publicAuthSignUpRoute = publicAuthSignUpImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => publicAuthRoute,
+} as any)
+
+const publicAuthSignInRoute = publicAuthSignInImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => publicAuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -32,39 +63,108 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/(public)': {
+      id: '/(public)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicImport
+      parentRoute: typeof rootRoute
+    }
+    '/(public)/_auth': {
+      id: '/(public)/_auth'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicAuthImport
+      parentRoute: typeof publicRoute
+    }
+    '/(public)/_auth/sign-in': {
+      id: '/(public)/_auth/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof publicAuthSignInImport
+      parentRoute: typeof publicAuthImport
+    }
+    '/(public)/_auth/sign-up': {
+      id: '/(public)/_auth/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof publicAuthSignUpImport
+      parentRoute: typeof publicAuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface publicAuthRouteChildren {
+  publicAuthSignInRoute: typeof publicAuthSignInRoute
+  publicAuthSignUpRoute: typeof publicAuthSignUpRoute
+}
+
+const publicAuthRouteChildren: publicAuthRouteChildren = {
+  publicAuthSignInRoute: publicAuthSignInRoute,
+  publicAuthSignUpRoute: publicAuthSignUpRoute,
+}
+
+const publicAuthRouteWithChildren = publicAuthRoute._addFileChildren(
+  publicAuthRouteChildren,
+)
+
+interface publicRouteChildren {
+  publicAuthRoute: typeof publicAuthRouteWithChildren
+}
+
+const publicRouteChildren: publicRouteChildren = {
+  publicAuthRoute: publicAuthRouteWithChildren,
+}
+
+const publicRouteWithChildren =
+  publicRoute._addFileChildren(publicRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof publicAuthRouteWithChildren
+  '/sign-in': typeof publicAuthSignInRoute
+  '/sign-up': typeof publicAuthSignUpRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof publicAuthRouteWithChildren
+  '/sign-in': typeof publicAuthSignInRoute
+  '/sign-up': typeof publicAuthSignUpRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/(public)': typeof publicRouteWithChildren
+  '/(public)/_auth': typeof publicAuthRouteWithChildren
+  '/(public)/_auth/sign-in': typeof publicAuthSignInRoute
+  '/(public)/_auth/sign-up': typeof publicAuthSignUpRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/sign-in' | '/sign-up'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/sign-in' | '/sign-up'
+  id:
+    | '__root__'
+    | '/'
+    | '/(public)'
+    | '/(public)/_auth'
+    | '/(public)/_auth/sign-in'
+    | '/(public)/_auth/sign-up'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  publicRoute: typeof publicRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  publicRoute: publicRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +177,34 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/(public)"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/(public)": {
+      "filePath": "(public)",
+      "children": [
+        "/(public)/_auth"
+      ]
+    },
+    "/(public)/_auth": {
+      "filePath": "(public)/_auth.tsx",
+      "parent": "/(public)",
+      "children": [
+        "/(public)/_auth/sign-in",
+        "/(public)/_auth/sign-up"
+      ]
+    },
+    "/(public)/_auth/sign-in": {
+      "filePath": "(public)/_auth.sign-in.tsx",
+      "parent": "/(public)/_auth"
+    },
+    "/(public)/_auth/sign-up": {
+      "filePath": "(public)/_auth.sign-up.tsx",
+      "parent": "/(public)/_auth"
     }
   }
 }

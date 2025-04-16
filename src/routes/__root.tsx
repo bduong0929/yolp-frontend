@@ -15,7 +15,9 @@ function RootComponent() {
     <React.Fragment>
       <QueryClientProvider client={queryClient}>
         <Navbar />
-        <Outlet />
+        <main className="h-[calc(100vh-65px)]">
+          <Outlet />
+        </main>
       </QueryClientProvider>
     </React.Fragment>
   );
