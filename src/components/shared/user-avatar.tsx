@@ -39,7 +39,7 @@ export const UserAvatar = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Avatar>
+          <Avatar className="cursor-pointer">
             <AvatarFallback>{getInitials(auth?.username ?? "")}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>

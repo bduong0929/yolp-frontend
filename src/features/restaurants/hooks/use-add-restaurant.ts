@@ -10,7 +10,7 @@ export const useAddRestaurant = () => {
 
   return useMutation({
     mutationFn: async (data: AddRestaurantSchema) => {
-      const response = await api.post("/restaurants/add", data);
+      const response = await api.post("/restaurants", data);
       return response.data;
     },
     onSuccess: () => {
