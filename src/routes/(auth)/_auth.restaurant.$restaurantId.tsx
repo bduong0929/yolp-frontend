@@ -11,6 +11,8 @@ import { EditRestaurantDialog } from "@/features/restaurants/components/edit-res
 import { Button } from "@/components/ui/button";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteRestaurant } from "@/features/restaurants/hooks/use-delete-restaurant";
+import { Textarea } from "@/components/ui/textarea";
+import { StarRating } from "@/features/restaurants/components/star-rating";
 
 export const Route = createFileRoute("/(auth)/_auth/restaurant/$restaurantId")({
   component: RouteComponent,
@@ -21,6 +23,8 @@ function RouteComponent() {
 
   const [editRestaurantDialog, setEditRestaurantDialog] = useState(false);
   const [deleteConfirm, DeleteConfirmDialog] = useConfirm();
+  const [review, setReview] = useState("");
+  const [rating, setRating] = useState(0);
 
   const { restaurantId } = useParams({
     from: "/(auth)/_auth/restaurant/$restaurantId",
@@ -39,6 +43,12 @@ function RouteComponent() {
     });
   };
 
+  const handleSubmit = () => {
+    console.log(review, rating);
+  };
+
+  const isValidForm = review && rating;
+
   if (isLoading) {
     return (
       <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
@@ -53,7 +63,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-20">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{restaurant.name}</h1>
           <div className="flex gap-2">
@@ -65,6 +75,31 @@ function RouteComponent() {
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
               <Trash className="size-4" />
+            </Button>
+          </div>
+        </div>
+
+        <div className="mx-auto flex h-[500px] w-[500px] flex-col gap-10">
+          <img
+            src={restaurant.imageUrl}
+            alt={restaurant.name}
+            className="mx-auto rounded-md"
+          />
+
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Rating</label>
+              <StarRating rating={rating} setRating={setRating} />
+            </div>
+            <Textarea
+              placeholder="Write a review"
+              className="resize-none"
+              rows={10}
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+            />
+            <Button disabled={!isValidForm} onClick={handleSubmit}>
+              Add Review
             </Button>
           </div>
         </div>
